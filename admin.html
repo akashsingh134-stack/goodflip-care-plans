@@ -1,169 +1,62 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GoodFlip — Care Plan Link Generator</title>
-<link rel="stylesheet" href="styles.css">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GoodFlip | Care Plan Link Generator</title><link rel="stylesheet" href="styles.css"></head>
 <body>
-<div class="shell">
-  <header class="brandbar">
-    <div class="logo">Good<span>Flip</span></div>
-    <div class="badge">CARE PLAN ADMIN</div>
+<div class="page">
+  <header class="topbar">
+    <div class="brand"><img src="goodflip-logo.jpg" alt="GoodFlip"><span class="brand-name">GoodFlip</span><span class="brand-tag">Doctor-Led Care. Healthier Tomorrows.</span></div>
+    <span class="pill">CARE PLAN ADMIN</span>
   </header>
 
-  <main class="card">
-    <div class="eyebrow">Doctor / Clinic Details</div>
-    <h1>Generate a personalized GoodFlip link</h1>
-    <p class="muted">Create a short patient enrollment link and QR code for a doctor or clinic.</p>
-
-    <form id="adminForm">
-      <label>Clinic or Doctor Name *
-        <input id="doctor" required placeholder="e.g. Dr Ritu Sharma Clinic">
-        <small>Shown in the patient page and WhatsApp lead.</small>
-      </label>
-
-      <label>Care Team WhatsApp Number *
-        <input id="whatsapp" required inputmode="numeric" placeholder="e.g. 9876543210">
-        <small>Enter the 10-digit Indian number. +91 is added automatically.</small>
-      </label>
-
-      <label>Referring Doctor Name
-        <input id="referrer" placeholder="e.g. Dr. Ritu Sharma">
-      </label>
-
-      <label>Doctor Photo URL
-        <input id="photo" type="url" placeholder="https://...">
-        <small>Optional. Use a hosted image URL to keep the QR/link compact.</small>
-      </label>
-
-      <div class="section-title">Care plan(s) available</div>
-      <div id="plans" class="plan-grid"></div>
-
-      <label class="switchrow">
-        <input type="checkbox" id="multi" checked>
-        <span>Let patient choose the care plan</span>
-      </label>
-
-      <button class="primary" type="submit">Generate Link & QR Code</button>
-    </form>
-
-    <section id="result" class="result hidden">
-      <div class="eyebrow">Link Ready</div>
-      <h2>Your GoodFlip enrollment link</h2>
-      <div class="linkbox" id="linkText"></div>
-      <div class="actions">
-        <button id="copyBtn" class="secondary">Copy Link</button>
-        <a id="previewBtn" class="secondary" target="_blank" rel="noopener">Open Preview</a>
+  <section class="hero">
+    <div>
+      <div class="eyebrow">Empowering healthier lives</div>
+      <h1>Generate a personalized GoodFlip link</h1>
+      <p>Create a simple patient enrollment link and QR code for every doctor or clinic. Share it directly with patients and start the care journey in minutes.</p>
+      <div class="feature-row">
+        <div class="feature"><span class="feature-icon">🔗</span>Personalized link</div>
+        <div class="feature"><span class="feature-icon">▦</span>QR code ready</div>
+        <div class="feature"><span class="feature-icon">◉</span>Direct to WhatsApp</div>
       </div>
-      <div class="qrwrap">
-        <div id="qr"></div>
+    </div>
+    <div class="hero-art"><div class="art-card"><div class="art-head"><img src="goodflip-logo.jpg" alt="GoodFlip"><span>One link. Better patient care.</span></div><div class="art-lines"><div class="art-line"><span>Personalised care</span><b>✓</b></div><div class="art-line"><span>Doctor-led programs</span><b>✓</b></div><div class="art-line"><span>Simple patient journey</span><b>✓</b></div><div class="art-line"><span>WhatsApp support</span><b>✓</b></div></div></div></div>
+  </section>
+
+  <main class="workspace">
+    <section class="card">
+      <div class="section-head"><span class="section-icon">👨‍⚕️</span><div><div class="eyebrow">Doctor / Clinic Details</div><h2>Create patient access</h2></div></div>
+      <p class="card-sub">Fill in the details below to create a personalised GoodFlip enrollment link.</p>
+      <form id="adminForm">
+        <div class="field"><label for="doctor">Clinic or Doctor Name *</label><input id="doctor" required placeholder="e.g. Dr Ritu Sharma Clinic"><small>Shown on the patient page and in the WhatsApp enquiry.</small></div>
+        <div class="field"><label for="whatsapp">Care Team WhatsApp Number *</label><div class="input-wrap"><span class="prefix">+91</span><input id="whatsapp" required inputmode="numeric" placeholder="9876543210"></div><small>Enter the 10-digit Indian WhatsApp number.</small></div>
+        <div class="field"><label for="referrer">Referring Doctor Name</label><input id="referrer" placeholder="e.g. Dr. Ritu Sharma"></div>
+        <div class="field"><label for="photo">Doctor Photo URL</label><input id="photo" type="url" placeholder="https://..."><small>Optional. Use a hosted image URL.</small></div>
+        <div class="plan-title">Care plan(s) available</div>
+        <div id="plans" class="plan-grid"></div>
+        <label class="switch"><input type="checkbox" id="multi" checked><span>Let patient choose the care plan</span></label>
+        <button class="primary" type="submit">🔗 &nbsp; Generate Link & QR Code &nbsp; →</button>
+      </form>
+    </section>
+
+    <section class="card result-card">
+      <div id="emptyResult" class="result-empty"><div><img src="goodflip-logo.jpg" alt="GoodFlip"><h3>Your link will appear here</h3><p>Complete the doctor details and choose the care plans. Your patient link and branded QR code will be generated here.</p></div></div>
+      <div id="result" class="result hidden">
+        <div class="eyebrow">Link Ready</div><h2>Your GoodFlip enrollment link</h2><p class="card-sub">Share this link or QR code with the patient.</p>
+        <div class="linkbox" id="linkText"></div>
+        <div class="actions"><button id="copyBtn" class="secondary" type="button">Copy Link</button><a id="previewBtn" class="secondary" target="_blank" rel="noopener">Open Preview</a></div>
+        <div class="qr-panel"><div class="qrwrap"><div id="qr"></div></div><div class="qr-label">SCAN TO ENROL IN GOODFLIP CARE</div><div class="actions center-actions"><button id="downloadQr" class="secondary" type="button">⬇ Download QR</button></div><p class="card-sub center" style="margin:12px 0 0">Print or share this QR code with the patient.</p></div>
+        <button id="againBtn" class="ghost" type="button">↻ Generate Another</button>
       </div>
-      <div class="qr-label">SCAN TO ENROL IN GOODFLIP CARE</div>
-      <div class="actions center-actions">
-        <button id="downloadQr" class="secondary">Download QR</button>
-      </div>
-      <p class="muted center">Print or share this QR code with the patient.</p>
-      <button id="againBtn" class="ghost">Generate Another</button>
     </section>
   </main>
+  <footer class="footer"><div class="footer-brand"><img src="goodflip-logo.jpg" alt=""> GoodFlip <span>— Healthier People. Stronger Communities.</span></div><span>A step towards a healthier tomorrow ♥</span></footer>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-<script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script><script src="app.js"></script>
 <script>
-const PLAN_LIST = window.GF_PLANS;
-const grid = document.getElementById('plans');
-PLAN_LIST.forEach(p => {
-  const label = document.createElement('label');
-  label.className = 'plan-option';
-  label.innerHTML = `<input type="checkbox" value="${p.id}" checked><span><b>${p.icon} ${p.name}</b><small>${p.short}</small></span>`;
-  grid.appendChild(label);
-});
-
-document.getElementById('adminForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const doctor = document.getElementById('doctor').value.trim();
-  const raw = document.getElementById('whatsapp').value.replace(/\D/g,'');
-  const phone = raw.length === 10 ? '91' + raw : raw;
-  if (!/^91\d{10}$/.test(phone)) { alert('Please enter a valid 10-digit Indian WhatsApp number.'); return; }
-
-  const selected = [...document.querySelectorAll('#plans input:checked')].map(x=>x.value);
-  if (!selected.length) { alert('Select at least one care plan.'); return; }
-
-  const base = new URL('index.html', window.location.href);
-  const params = new URLSearchParams();
-  params.set('doctor', doctor);
-  params.set('wa', phone);
-  if (document.getElementById('referrer').value.trim()) params.set('ref', document.getElementById('referrer').value.trim());
-  if (document.getElementById('photo').value.trim()) params.set('photo', document.getElementById('photo').value.trim());
-  params.set('plans', selected.join(','));
-  params.set('choose', document.getElementById('multi').checked ? '1' : '0');
-  const link = base.toString() + '?' + params.toString();
-
-  document.getElementById('linkText').textContent = link;
-  document.getElementById('previewBtn').href = link;
-
-  const qrBox = document.getElementById('qr');
-  qrBox.innerHTML = '';
-  new QRCode(qrBox, {
-    text: link,
-    width: 320,
-    height: 320,
-    correctLevel: QRCode.CorrectLevel.H
-  });
-
-  document.getElementById('result').classList.remove('hidden');
-  document.getElementById('result').scrollIntoView({behavior:'smooth'});
-});
-
-document.getElementById('copyBtn').onclick = async () => {
-  await navigator.clipboard.writeText(document.getElementById('linkText').textContent);
-  document.getElementById('copyBtn').textContent = 'Copied ✓';
-  setTimeout(()=>document.getElementById('copyBtn').textContent='Copy Link',1500);
-};
-
-document.getElementById('downloadQr').onclick = () => {
-  const qrCanvas = document.querySelector('#qr canvas');
-  if (!qrCanvas) {
-    alert('Please generate the QR code first, then try again.');
-    return;
-  }
-
-  const out = document.createElement('canvas');
-  out.width = 900;
-  out.height = 1040;
-  const ctx = out.getContext('2d');
-
-  ctx.fillStyle = '#ffffff';
-  ctx.fillRect(0, 0, out.width, out.height);
-
-  ctx.drawImage(qrCanvas, 290, 60, 320, 320);
-
-  ctx.fillStyle = '#173b2b';
-  ctx.textAlign = 'center';
-  ctx.font = '800 48px Arial';
-  ctx.fillText('GoodFlip', 450, 455);
-
-  ctx.font = '700 24px Arial';
-  ctx.fillText('SCAN TO ENROL IN GOODFLIP CARE', 450, 505);
-
-  ctx.fillStyle = '#687a70';
-  ctx.font = '20px Arial';
-  ctx.fillText('Doctor-led care programs', 450, 545);
-
-  const a = document.createElement('a');
-  a.download = 'GoodFlip-Care-QR.png';
-  a.href = out.toDataURL('image/png');
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-};
-
-document.getElementById('againBtn').onclick = () => {
-  document.getElementById('result').classList.add('hidden');
-  document.getElementById('qr').innerHTML = '';
-};
-</script>
-</body>
-</html>
+const PLAN_LIST=window.GF_PLANS,grid=document.getElementById('plans');
+PLAN_LIST.forEach(p=>{const label=document.createElement('label');label.className='plan-option';label.innerHTML=`<input type="checkbox" value="${p.id}" checked><span><b>${p.icon} ${p.name}</b><small>${p.short}</small></span>`;grid.appendChild(label)});
+document.getElementById('adminForm').addEventListener('submit',e=>{e.preventDefault();const doctor=document.getElementById('doctor').value.trim(),raw=document.getElementById('whatsapp').value.replace(/\D/g,''),phone=raw.length===10?'91'+raw:raw;if(!/^91\d{10}$/.test(phone)){alert('Please enter a valid 10-digit Indian WhatsApp number.');return}const selected=[...document.querySelectorAll('#plans input:checked')].map(x=>x.value);if(!selected.length){alert('Select at least one care plan.');return}const base=new URL('index.html',location.href),params=new URLSearchParams();params.set('doctor',doctor);params.set('wa',phone);if(document.getElementById('referrer').value.trim())params.set('ref',document.getElementById('referrer').value.trim());if(document.getElementById('photo').value.trim())params.set('photo',document.getElementById('photo').value.trim());params.set('plans',selected.join(','));params.set('choose',document.getElementById('multi').checked?'1':'0');const link=base+'?'+params;document.getElementById('linkText').textContent=link;document.getElementById('previewBtn').href=link;const qrBox=document.getElementById('qr');qrBox.innerHTML='';if(typeof QRCode==='undefined'){alert('QR service is still loading. Please refresh the page and try again.');return}new QRCode(qrBox,{text:link,width:320,height:320,correctLevel:QRCode.CorrectLevel.H});document.getElementById('emptyResult').classList.add('hidden');document.getElementById('result').classList.remove('hidden');document.getElementById('result').scrollIntoView({behavior:'smooth'})});
+document.getElementById('copyBtn').onclick=async()=>{try{await navigator.clipboard.writeText(document.getElementById('linkText').textContent);document.getElementById('copyBtn').textContent='Copied ✓';setTimeout(()=>document.getElementById('copyBtn').textContent='Copy Link',1500)}catch(e){alert('Please copy the link manually.')}};
+document.getElementById('downloadQr').onclick=()=>{const c=document.querySelector('#qr canvas');if(!c){alert('Please generate the QR code first.');return}const out=document.createElement('canvas');out.width=900;out.height=1040;const ctx=out.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,out.width,out.height);ctx.drawImage(c,290,60,320,320);ctx.fillStyle='#087568';ctx.textAlign='center';ctx.font='800 48px Arial';ctx.fillText('GoodFlip',450,455);ctx.font='700 24px Arial';ctx.fillText('SCAN TO ENROL IN GOODFLIP CARE',450,505);ctx.fillStyle='#687a70';ctx.font='20px Arial';ctx.fillText('Doctor-led care programs',450,545);const a=document.createElement('a');a.download='GoodFlip-Care-QR.png';a.href=out.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove()};
+document.getElementById('againBtn').onclick=()=>{document.getElementById('result').classList.add('hidden');document.getElementById('emptyResult').classList.remove('hidden');document.getElementById('qr').innerHTML=''};
+</script></body></html>
