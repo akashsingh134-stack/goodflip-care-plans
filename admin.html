@@ -103,7 +103,16 @@ document.getElementById('adminForm').addEventListener('submit', e => {
 
   document.getElementById('linkText').textContent = link;
   document.getElementById('previewBtn').href = link;
-  document.getElementById('qr').src = 'https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data=' + encodeURIComponent(link);
+
+  const qrBox = document.getElementById('qr');
+  qrBox.innerHTML = '';
+  new QRCode(qrBox, {
+    text: link,
+    width: 320,
+    height: 320,
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
   document.getElementById('result').classList.remove('hidden');
   document.getElementById('result').scrollIntoView({behavior:'smooth'});
 });
@@ -113,7 +122,48 @@ document.getElementById('copyBtn').onclick = async () => {
   document.getElementById('copyBtn').textContent = 'Copied ✓';
   setTimeout(()=>document.getElementById('copyBtn').textContent='Copy Link',1500);
 };
-document.getElementById('againBtn').onclick = () => document.getElementById('result').classList.add('hidden');
+
+document.getElementById('downloadQr').onclick = () => {
+  const qrCanvas = document.querySelector('#qr canvas');
+  if (!qrCanvas) {
+    alert('Please generate the QR code first, then try again.');
+    return;
+  }
+
+  const out = document.createElement('canvas');
+  out.width = 900;
+  out.height = 1040;
+  const ctx = out.getContext('2d');
+
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, out.width, out.height);
+
+  ctx.drawImage(qrCanvas, 290, 60, 320, 320);
+
+  ctx.fillStyle = '#173b2b';
+  ctx.textAlign = 'center';
+  ctx.font = '800 48px Arial';
+  ctx.fillText('GoodFlip', 450, 455);
+
+  ctx.font = '700 24px Arial';
+  ctx.fillText('SCAN TO ENROL IN GOODFLIP CARE', 450, 505);
+
+  ctx.fillStyle = '#687a70';
+  ctx.font = '20px Arial';
+  ctx.fillText('Doctor-led care programs', 450, 545);
+
+  const a = document.createElement('a');
+  a.download = 'GoodFlip-Care-QR.png';
+  a.href = out.toDataURL('image/png');
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};
+
+document.getElementById('againBtn').onclick = () => {
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('qr').innerHTML = '';
+};
 </script>
 </body>
 </html>
