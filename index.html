@@ -1,182 +1,27 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GoodFlip Care</title>
-<link rel="stylesheet" href="styles.css">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GoodFlip Care | Personalised Health Support</title><link rel="stylesheet" href="styles.css"></head>
 <body>
-<div class="patient-shell">
-  <header class="patient-head">
-    <div class="logo">Good<span>Flip</span></div>
-    <div class="secure">Doctor-led metabolic care</div>
-  </header>
-
+<div class="patient-page">
+  <header class="patient-top"><div class="brand patient-brand"><img src="goodflip-logo.jpg" alt="GoodFlip"><span class="brand-name">GoodFlip</span></div><span class="pill">DOCTOR-LED CARE</span></header>
   <main>
-    <section class="hero">
-      <div id="avatar" class="avatar">GF</div>
-      <div>
-        <div class="eyebrow">GOODFLIP CARE</div>
-        <h1 id="doctorName">Personalised care, built around you.</h1>
-        <p id="referral" class="muted"></p>
-      </div>
+    <section class="patient-hero">
+      <div class="doctor-row"><div id="avatar" class="avatar">GF</div><div><div class="eyebrow">GOODFLIP CARE</div><h1 id="doctorName">Personalised care, built around you.</h1><p id="referral"></p></div></div>
+      <div class="patient-features"><div class="mini-feature">✓ Doctor-led care</div><div class="mini-feature">✓ Personalised support</div><div class="mini-feature">✓ Simple WhatsApp follow-up</div></div>
     </section>
-
     <section id="notice" class="notice hidden"></section>
-
-    <section id="chooseSection">
-      <div class="section-title">What would you like help with?</div>
-      <div id="planCards" class="patient-plans"></div>
-    </section>
-
-    <section id="leadSection" class="lead-card hidden">
-      <div class="selected-plan" id="selectedPlan"></div>
-      <h2>Let’s take the next step</h2>
-      <p class="muted">Share your details and the GoodFlip care team will contact you.</p>
-      <form id="leadForm">
-        <label>Full Name *
-          <input id="name" required placeholder="Your name">
-        </label>
-        <label>Mobile Number *
-          <input id="mobile" required inputmode="numeric" placeholder="10-digit mobile number">
-        </label>
-        <div class="two">
-          <label>Age
-            <input id="age" type="number" min="1" max="120" placeholder="Age">
-          </label>
-          <label>Gender
-            <select id="gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select>
-          </label>
-        </div>
-        <label>Anything you'd like the care team to know?
-          <textarea id="notes" rows="3" placeholder="Optional"></textarea>
-        </label>
-        <label class="consent"><input id="consent" type="checkbox" required> <span>I agree to be contacted by GoodFlip regarding this care enquiry.</span></label>
-        <button class="primary" type="submit">Continue on WhatsApp</button>
-      </form>
-      <button class="ghost" id="changePlan">Change care plan</button>
-    </section>
-
+    <section id="chooseSection" class="choose-card"><div class="eyebrow">Start your care journey</div><h2>What would you like help with?</h2><p class="card-sub">Choose the area that best matches your current health goal. A GoodFlip care team member will guide you through the next steps.</p><div id="planCards" class="patient-plans"></div></section>
+    <section id="leadSection" class="lead-card hidden"><div class="selected-plan" id="selectedPlan"></div><h2>Let’s take the next step</h2><p class="card-sub">Share your details and the GoodFlip care team will contact you on WhatsApp.</p><form id="leadForm"><div class="field"><label for="name">Full Name *</label><input id="name" required placeholder="Your name"></div><div class="field"><label for="mobile">Mobile Number *</label><div class="input-wrap"><span class="prefix">+91</span><input id="mobile" required inputmode="numeric" placeholder="9876543210"></div></div><div class="two"><div class="field"><label for="age">Age</label><input id="age" type="number" min="1" max="120" placeholder="Age"></div><div class="field"><label for="gender">Gender</label><select id="gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select></div></div><div class="field"><label for="notes">Anything you'd like the care team to know?</label><textarea id="notes" rows="3" placeholder="Optional"></textarea></div><label class="consent"><input id="consent" type="checkbox" required><span>I agree to be contacted by GoodFlip regarding this care enquiry.</span></label><button class="primary" type="submit">Continue on WhatsApp →</button></form><button class="back-link" id="changePlan" type="button">← Change care plan</button></section>
     <p class="footer-note">GoodFlip care programs are personalised after clinical assessment. Submitting this form is an enquiry and does not by itself start treatment.</p>
   </main>
 </div>
-<script src="app.js"></script>
-<script>
-const qs = new URLSearchParams(location.search);
-const doctor = qs.get('doctor') || '';
-const wa = qs.get('wa') || '';
-const ref = qs.get('ref') || '';
-const photo = qs.get('photo') || '';
-const allowed = (qs.get('plans') || window.GF_PLANS.map(p=>p.id).join(',')).split(',').filter(Boolean);
-const choose = qs.get('choose') !== '0';
-
-document.getElementById('doctorName').textContent = doctor ? `Care with GoodFlip through ${doctor}` : 'Personalised care, built around you.';
-if (ref) document.getElementById('referral').textContent = `Referred by ${ref}`;
-if (photo) {
-  const a = document.getElementById('avatar');
-  a.style.backgroundImage = `url("${photo.replace(/"/g,'')}")`;
-  a.textContent = '';
-}
-
-const plans = window.GF_PLANS.filter(p=>allowed.includes(p.id));
-const cards = document.getElementById('planCards');
-let selected = choose ? null : (plans[0] || null);
-
-if (!wa) {
-  const n = document.getElementById('notice');
-  n.textContent = 'This link is missing the care-team WhatsApp number. Please contact the clinic directly.';
-  n.classList.remove('hidden');
-}
-
-plans.forEach(p => {
-  const card = document.createElement('button');
-  card.type='button'; card.className='patient-plan';
-  card.innerHTML = `<span class="plan-icon">${p.icon}</span><span><b>${p.name}</b><small>${p.desc}</small></span><span class="arrow">→</span>`;
-  card.onclick = () => selectPlan(p);
-  cards.appendChild(card);
-});
-
-function selectPlan(p){
-  selected=p;
-  document.getElementById('selectedPlan').innerHTML = `${p.icon} <b>${p.name}</b>`;
-  document.getElementById('leadSection').classList.remove('hidden');
-  document.getElementById('chooseSection').classList.add('hidden');
-  window.scrollTo({top:document.getElementById('leadSection').offsetTop-20,behavior:'smooth'});
-}
-if (!choose && selected) selectPlan(selected);
-
-document.getElementById('changePlan').onclick=()=>{
-  document.getElementById('leadSection').classList.add('hidden');
-  document.getElementById('chooseSection').classList.remove('hidden');
-  window.scrollTo({top:0,behavior:'smooth'});
-};
-
-document.getElementById('leadForm').addEventListener('submit', e=>{
-  e.preventDefault();
-  if (!selected) return;
-  const mobile=document.getElementById('mobile').value.replace(/\D/g,'');
-  if (!/^\d{10}$/.test(mobile)) { alert('Please enter a valid 10-digit mobile number.'); return; }
-  const msg = [
-    'Hello GoodFlip Care Team,',
-    '',
-    'I am interested in a GoodFlip care program.',
-    `Care Plan: ${selected.name}`,
-    `Doctor/Clinic: ${doctor || 'Not specified'}`,
-    ref ? `Referred by: ${ref}` : '',
-    '',
-    `Name: ${document.getElementById('name').value.trim()}`,
-    `Mobile: ${mobile}`,
-    document.getElementById('age').value ? `Age: ${document.getElementById('age').value}` : '',
-    document.getElementById('gender').value ? `Gender: ${document.getElementById('gender').value}` : '',
-    document.getElementById('notes').value.trim() ? `Notes: ${document.getElementById('notes').value.trim()}` : ''
-  ].filter(Boolean).join('\n');
-  // Save the lead to Google Sheets through Apps Script.
-  // A normal HTML form POST avoids browser CORS/preflight issues.
-  const endpoint = window.GF_SHEETS_ENDPOINT;
-  const frameName = 'gfLeadFrame';
-  let frame = document.getElementById(frameName);
-  if (!frame) {
-    frame = document.createElement('iframe');
-    frame.name = frameName;
-    frame.id = frameName;
-    frame.style.display = 'none';
-    document.body.appendChild(frame);
-  }
-
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = endpoint;
-  form.target = frameName;
-  form.style.display = 'none';
-
-  const fields = {
-    doctor: doctor || '',
-    referrer: ref || '',
-    patientName: document.getElementById('name').value.trim(),
-    mobile: mobile,
-    plan: selected.name,
-    age: document.getElementById('age').value || '',
-    gender: document.getElementById('gender').value || '',
-    notes: document.getElementById('notes').value.trim(),
-    source: 'GoodFlip Care Link'
-  };
-
-  Object.entries(fields).forEach(([key, value]) => {
-    const input = document.createElement('input');
-    input.type = 'hidden';
-    input.name = key;
-    input.value = value;
-    form.appendChild(input);
-  });
-
-  document.body.appendChild(form);
-  form.submit();
-  form.remove();
-
-  // Continue to WhatsApp after submitting the sheet lead.
-  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank');
-});
-</script>
-</body>
-</html>
+<script src="app.js"></script><script>
+const qs=new URLSearchParams(location.search),doctor=qs.get('doctor')||'',wa=qs.get('wa')||'',ref=qs.get('ref')||'',photo=qs.get('photo')||'',allowed=(qs.get('plans')||window.GF_PLANS.map(p=>p.id).join(',')).split(',').filter(Boolean),choose=qs.get('choose')!=='0';
+document.getElementById('doctorName').textContent=doctor?`Care with GoodFlip through ${doctor}`:'Personalised care, built around you.';if(ref)document.getElementById('referral').textContent=`Referred by ${ref}`;if(photo){const a=document.getElementById('avatar');a.style.backgroundImage=`url("${photo.replace(/"/g,'')}")`;a.textContent=''}
+const plans=window.GF_PLANS.filter(p=>allowed.includes(p.id)),cards=document.getElementById('planCards');let selected=choose?null:(plans[0]||null);if(!wa){const n=document.getElementById('notice');n.textContent='This link is missing the care-team WhatsApp number. Please contact the clinic directly.';n.classList.remove('hidden')}
+plans.forEach(p=>{const card=document.createElement('button');card.type='button';card.className='patient-plan';card.innerHTML=`<span class="plan-icon">${p.icon}</span><span><b>${p.name}</b><small>${p.desc}</small></span><span class="arrow">→</span>`;card.onclick=()=>selectPlan(p);cards.appendChild(card)});
+function selectPlan(p){selected=p;document.getElementById('selectedPlan').innerHTML=`${p.icon} &nbsp; ${p.name}`;document.getElementById('leadSection').classList.remove('hidden');document.getElementById('chooseSection').classList.add('hidden');window.scrollTo({top:document.getElementById('leadSection').offsetTop-20,behavior:'smooth'})}if(!choose&&selected)selectPlan(selected);
+document.getElementById('changePlan').onclick=()=>{document.getElementById('leadSection').classList.add('hidden');document.getElementById('chooseSection').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'})};
+document.getElementById('leadForm').addEventListener('submit',e=>{e.preventDefault();if(!selected)return;const mobile=document.getElementById('mobile').value.replace(/\D/g,'');if(!/^\d{10}$/.test(mobile)){alert('Please enter a valid 10-digit mobile number.');return}const msg=['Hello GoodFlip Care Team,','','I am interested in a GoodFlip care program.',`Care Plan: ${selected.name}`,`Doctor/Clinic: ${doctor||'Not specified'}`,ref?`Referred by: ${ref}`:'','',`Name: ${document.getElementById('name').value.trim()}`,`Mobile: ${mobile}`,document.getElementById('age').value?`Age: ${document.getElementById('age').value}`:'',document.getElementById('gender').value?`Gender: ${document.getElementById('gender').value}`:'',document.getElementById('notes').value.trim()?`Notes: ${document.getElementById('notes').value.trim()}`:''].filter(Boolean).join('\n');
+const endpoint=window.GF_SHEETS_ENDPOINT,frameName='gfLeadFrame';let frame=document.getElementById(frameName);if(!frame){frame=document.createElement('iframe');frame.name=frameName;frame.id=frameName;frame.style.display='none';document.body.appendChild(frame)}const form=document.createElement('form');form.method='POST';form.action=endpoint;form.target=frameName;form.style.display='none';const fields={doctor:doctor||'',referrer:ref||'',patientName:document.getElementById('name').value.trim(),mobile,plan:selected.name,age:document.getElementById('age').value||'',gender:document.getElementById('gender').value||'',notes:document.getElementById('notes').value.trim(),source:'GoodFlip Care Link'};Object.entries(fields).forEach(([key,value])=>{const input=document.createElement('input');input.type='hidden';input.name=key;input.value=value;form.appendChild(input)});document.body.appendChild(form);form.submit();form.remove();window.open(`https://wa.me/${wa}?text=${encodeURIComponent(msg)}`,'_blank')});
+</script></body></html>
